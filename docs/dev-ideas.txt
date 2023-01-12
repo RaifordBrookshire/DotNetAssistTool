@@ -1,0 +1,20 @@
+
+
+This Tool will be deliverd in 3 initial stages.
+
+Phase 1
+-------------------------------------
+Implement to most basic Command and get the project strutured to easily add more 
+Commands, Options & Argument as required. This tool will be a living evolving tool
+that will take on more utility as required.
+
+In order of simple to more complex
+- - - - - - - - - - - - ---- - - -
+dna version							-> Displays what versions of dot net are installed
+dna -h --help						-> Print Full Help with examples
+dna clean --hard					-> Cleans the Binaries from the project. --hard delete entire directories (bin/obj)
+dna dump							-> Dump DotNet / Developer related Diagnostics with options to include more
+		--level 1-5 --file 'file.dat'		
+
+
+
