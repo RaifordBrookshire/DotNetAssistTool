@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Dna.Tool": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}

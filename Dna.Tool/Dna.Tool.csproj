@@ -5,6 +5,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<OutputType>Exe</OutputType>
+	<PublishSingleFile>false</PublishSingleFile>
+	<SelfContained>false</SelfContained>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<PublishReadyToRun>true</PublishReadyToRun>
+	<AssemblyName>dna</AssemblyName>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<PackAsTool>true</PackAsTool>
+	<ToolCommandName>dna</ToolCommandName>
   </PropertyGroup>
 
   <ItemGroup>

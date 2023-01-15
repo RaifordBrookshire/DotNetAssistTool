@@ -10,7 +10,7 @@ that will take on more utility as required.
 
 In order of simple to more complex
 - - - - - - - - - - - - ---- - - -
-dna version							-> Displays what versions of dot net are installed
+dna -v --version							-> Displays what versions of dot net are installed
 dna -h --help						-> Print Full Help with examples
 dna clean --hard					-> Cleans the Binaries from the project. --hard delete entire directories (bin/obj)
 dna dump							-> Dump DotNet / Developer related Diagnostics with options to include more

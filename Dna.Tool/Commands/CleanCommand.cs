@@ -1,47 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.CommandLine;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.CommandLine;
 
 namespace Dna.Tool.Commands
 {
-	internal class CleanCommand : Command
+	internal class CleanCommand : CommandBase
 	{
 		public CleanCommand(string name, string? description, Command parentCommand) : base(name, description)
 		{
 			// Create Clean Command Options
 			var cleanOptionLevel = new Option<int>(new[] { "-l", "--level" }, "This is an example Option -p CleanOptionLevel");
 			var cleanOptionHard = new Option<bool>(new[] { "-h" }, "This is an example Option -p CleanOptionHard");
+			var noPromptOption = new Option<bool>(new[] { "--no-prompt" }, "Prevents a prompt before executing.");
+			var rootFolderOption = new Option<FileInfo?>(new[] { "--root-folder" }, "The root folder you want to clean. Default is the working directory.");
 
 			// Add Options to Clean Command
 			AddOption(cleanOptionLevel);
 			AddOption(cleanOptionHard);
+			AddOption(noPromptOption);
+			AddOption(rootFolderOption);	
+
+			// Add Sub Command
+			AddCommand(new CleanAllSubCommand("all", "clean ALL of the stuff"));
 
 			// Set the Clean Command Handler
-			//SetHandler<int, bool>(HandleCleanCommand, cleanOptionLevel, cleanOptionHard);
-
-			this.SetHandler<int, bool>(HandleCleanCommand, cleanOptionLevel, cleanOptionHard);
-
-			//parentCommand.AddCommand(this);
+			this.SetHandler<int, bool, bool, FileInfo>(CommandHandler, cleanOptionLevel, cleanOptionHard, noPromptOption, rootFolderOption);
 		}
 
-		private void HandleCleanCommand(int level, bool hard)
+		private void CommandHandler(int level, bool hard, bool noPrompt, FileInfo? rootFolder)
 		{
-			Console.WriteLine($"HandleCleanCommand: Level Int: {level}");
-			Console.WriteLine($"HandleCleanCommand: hardBool: {hard}");
-			//Console.WriteLine($"Inside HandleRootCommand File: {fileInfo.Name}");
+			Output.WriteLine("-----------------------------------------------------------------------");
+			Output.WriteLine("--------------------   Cleaning Folders -------------------------------");
+			Output.WriteLine("-----------------------------------------------------------------------");
 
-			if (hard)
+			string rootPath;
+
+			if (rootFolder != null)
 			{
-				Console.WriteLine("Performing a hard clean...");
+				rootPath = Path.GetDirectoryName(rootFolder.FullName);
+				Output.WriteLine($"Processing Folder: {rootPath}");
+
+				if (!Directory.Exists(rootPath))
+				{
+					Output.WriteLine($"Path does not exist {rootPath}...Defaulting to working directory");
+					rootPath = Directory.GetCurrentDirectory();
+					Output.WriteLine($"Root path reset to {rootPath}");
+				}
 			}
 			else
 			{
-				Console.WriteLine("Performing a regular clean...");
+				rootPath = Directory.GetCurrentDirectory();
 			}
-			//return 0;
+			// This is here when you need to debug in the ide
+			//	rootPath = "C:\\temp\\temp";
+
+			Output.WriteLine($"Removing bin / obj files from  {rootPath} ...");
+			StartProcess("powershell", $"Get-ChildItem -Path '{rootPath}' -Recurse -Force -Include bin, obj -Directory | Remove-Item -Recurse -Force -Verbose");
+		
+			if (hard)
+			{
+				// Add code here to a hard clean	
+				// this Could remove the .vs file for example	
+			}
+
+			Output.WriteLine("Cleaning Process Complete.");
 		}
 	}
 }
